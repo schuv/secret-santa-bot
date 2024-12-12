@@ -15,11 +15,11 @@ from aiogram import (
 
 from config import Config
 from database.methods import User
+from methods.users_result import create_santa_results
 from methods.messages import (
     text_replace,
     md_replace_text
 )
-from methods.users_result import create_santa_results
 from keyboard import (
     create_markup,
     create_button

@@ -2,6 +2,7 @@
 *.db
 .env
 venv
-log
+*.log
 words.txt
 **/__pycache__/
+logs
