@@ -1,6 +1,7 @@
 FROM python:3.9
 
 COPY .env .
+COPY requirements.txt .
 COPY ./src/ .
 
 RUN python3 -m pip install --upgrade pip
