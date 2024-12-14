@@ -128,7 +128,7 @@ UserModel.metadata.create_all(engine)
 Команда для запуска:
 
 ```bash
-docker-compose up
+docker-compose up --build -d
 ```
 
 # Будущее
