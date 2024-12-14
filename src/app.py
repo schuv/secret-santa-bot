@@ -5,6 +5,7 @@ from aiogram.types import Message
 from aiogram.filters import CommandStart
 from aiogram.fsm.state import default_state
 from aiogram.enums.parse_mode import ParseMode
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.client.default import DefaultBotProperties
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram import (
@@ -48,27 +49,30 @@ async def start_message_handler(message: Message) -> None:
         await message.answer(Config.TEXTS["verification"]["start"])
 
         for admin_user in Config.ADMINS_ID:
-            await message.bot.send_message(
-                admin_user,
-                text_replace(
-                    Config.TEXTS["admin"]["verification_request"],
-                    user_id=message.chat.id,
-                    full_name=f"{md_replace_text(message.chat.full_name)}",
-                    username=f"{md_replace_text(message.chat.username)}"
-                ),
-                reply_markup=create_markup(
-                    [
-                        create_button(
-                            Config.TEXTS["keyboard"]["admin_accept"],
-                            f"ADMIN_ACCCEPT_{message.chat.id}"
-                        ),
-                        create_button(
-                            Config.TEXTS["keyboard"]["admin_decline"],
-                            f"ADMIN_DECLINE_{message.chat.id}"
-                        )
-                    ]
+            try:
+                await message.bot.send_message(
+                    admin_user,
+                    text_replace(
+                        Config.TEXTS["admin"]["verification_request"],
+                        user_id=message.chat.id,
+                        full_name=f"{md_replace_text(message.chat.full_name)}",
+                        username=f"{md_replace_text(message.chat.username)}"
+                    ),
+                    reply_markup=create_markup(
+                        [
+                            create_button(
+                                Config.TEXTS["keyboard"]["admin_accept"],
+                                f"ADMIN_ACCCEPT_{message.chat.id}"
+                            ),
+                            create_button(
+                                Config.TEXTS["keyboard"]["admin_decline"],
+                                f"ADMIN_DECLINE_{message.chat.id}"
+                            )
+                        ]
+                    )
                 )
-            )
+            except TelegramBadRequest:
+                continue
         return
 
     await menu.messages.send_menu_message(message)

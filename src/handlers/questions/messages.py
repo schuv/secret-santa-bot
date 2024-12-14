@@ -3,6 +3,7 @@ import json
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+from aiogram.exceptions import TelegramBadRequest
 
 from config import Config
 from states import Questions
@@ -116,28 +117,31 @@ async def messages_handler(message: Message, state: FSMContext) -> None:
             )
 
         for admin in Config.HOST_ADMINS_ID:
-            await message.bot.send_message(
-                admin,
-                text_replace(
-                    Config.TEXTS["admin"]["panel"]["questions_report"],
-                    full_name=message.chat.full_name,
-                    report_text="\n".join(report_text)
-                ),
-                reply_markup=create_markup(
-                    [
-                        create_button(
-                            f"{Config.TEXTS['keyboard']['delete_answer']}",
-                            f"ADMIN_DELETE_ANSWER_{message.chat.id}"
-                        )
-                    ],
-                    [
-                        create_button(
-                            f"{Config.TEXTS['keyboard']['delete_user']}",
-                            f"ADMIN_USER_DELETE_{message.chat.id}"
-                        )
-                    ]
+            try:
+                await message.bot.send_message(
+                    admin,
+                    text_replace(
+                        Config.TEXTS["admin"]["panel"]["questions_report"],
+                        full_name=message.chat.full_name,
+                        report_text="\n".join(report_text)
+                    ),
+                    reply_markup=create_markup(
+                        [
+                            create_button(
+                                f"{Config.TEXTS['keyboard']['delete_answer']}",
+                                f"ADMIN_DELETE_ANSWER_{message.chat.id}"
+                            )
+                        ],
+                        [
+                            create_button(
+                                f"{Config.TEXTS['keyboard']['delete_user']}",
+                                f"ADMIN_USER_DELETE_{message.chat.id}"
+                            )
+                        ]
+                    )
                 )
-            )
+            except TelegramBadRequest:
+                continue
         return
 
     current_data["step"] += 1
