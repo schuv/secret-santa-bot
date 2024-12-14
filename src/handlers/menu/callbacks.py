@@ -110,7 +110,10 @@ async def enter_data_callback_handler(
         return
 
     await callback.message.edit_text(
-        Config.TEXTS["questions"]["initial"],
+        text_replace(
+            Config.TEXTS["questions"]["initial"],
+            questions_count=len(Config.ALL_QUESTIONS)
+        ),
         reply_markup=create_markup(
             [
                 create_button(
