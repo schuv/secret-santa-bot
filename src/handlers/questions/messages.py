@@ -122,7 +122,7 @@ async def messages_handler(message: Message, state: FSMContext) -> None:
                     admin,
                     text_replace(
                         Config.TEXTS["admin"]["panel"]["questions_report"],
-                        full_name=message.chat.full_name,
+                        full_name=md_replace_text(message.chat.full_name),
                         report_text="\n".join(report_text)
                     ),
                     reply_markup=create_markup(
