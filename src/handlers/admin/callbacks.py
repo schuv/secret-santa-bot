@@ -8,8 +8,11 @@ from aiogram import (
 from config import Config
 from states import AdminPanel
 from database.methods import User
-from methods.messages import text_replace
 from handlers.admin.messages import send_panel_message
+from methods.messages import (
+    text_replace,
+    md_replace_text
+)
 from keyboard import (
     create_markup,
     create_button
@@ -83,7 +86,7 @@ async def delete_answer_callback_handler(callback: CallbackQuery) -> None:
     await callback.message.edit_text(
         text_replace(
             Config.TEXTS["admin"]["panel"]["user_answer_deleted"],
-            full_name=f"{user.first_name} {user.last_name}"
+            full_name=md_replace_text(f"{user.first_name} {user.last_name}")
         )
     )
 
