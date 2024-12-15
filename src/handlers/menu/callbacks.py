@@ -162,25 +162,27 @@ async def admin_verification_callback_handler(callback: CallbackQuery) -> None:
     await callback.message.edit_text(
         text_replace(
             Config.TEXTS["admin"][text],
-            full_name=f"{user.first_name} {user.last_name}"
+            full_name=md_replace_text(f"{user.first_name} {user.last_name}")
         ),
         reply_markup=None
     )
 
     if "ACCCEPT" in callback.data:
         await User(user_id=user.user_id).update(verified=True)
-        await callback.bot.send_message(
-            user.user_id,
-            Config.TEXTS["verification"]["accepted"],
-            reply_markup=create_markup(
-                [
-                    create_button(
-                        Config.TEXTS["keyboard"]["to_menu"],
-                        "BACK"
-                    )
-                ]
+
+        if user.verified is None:
+            await callback.bot.send_message(
+                user.user_id,
+                Config.TEXTS["verification"]["accepted"],
+                reply_markup=create_markup(
+                    [
+                        create_button(
+                            Config.TEXTS["keyboard"]["to_menu"],
+                            "BACK"
+                        )
+                    ]
+                )
             )
-        )
         return
 
     await User(user_id=user.user_id).update(verified=False)
