@@ -41,6 +41,9 @@ async def send_menu_message(message: Message, edit: bool = False) -> None:
             text += text_replace(
                 f"\n{Config.TEXTS['menu']['general_date_release']}",
                 date=datetime.fromtimestamp(
+                    int(Config.RELEASE_TIMESTAMP)
+                ).strftime("%d\\.%m %H:%M"),
+                date_closed=datetime.fromtimestamp(
                     int(Config.RELEASE_ABOUT_TIMESTAMP)
                 ).strftime("%d\\.%m %H:%M")
             )
