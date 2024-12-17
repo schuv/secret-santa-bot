@@ -23,7 +23,8 @@ async def create_santa_results(bot: Bot) -> None:
     result = {}
 
     for user in users:
-        if user.preferences is not None and user.verified:
+        if user.preferences is not None and user.verified \
+                and user.user_for_gift_id is None:
             participants.append(user.id)
 
     participants = random.sample(participants, len(participants))
