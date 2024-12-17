@@ -33,17 +33,21 @@ async def send_menu_message(message: Message, edit: bool = False) -> None:
         id=user.id
     )
 
-    if Config.RELEASE_ABOUT_TIMESTAMP > round(time.time()):
-        text += text_replace(
-            f"\n{Config.TEXTS['menu']['general_date_release']}",
-            date=datetime.fromtimestamp(
-                int(Config.RELEASE_ABOUT_TIMESTAMP)
-            ).strftime("%d\\.%m %H:%M")
-        )
-
     reply_markup = []
 
     if not user.gift_delivered:
+        if user.user_for_gift_id is None \
+                and Config.RELEASE_ABOUT_TIMESTAMP > round(time.time()):
+            text += text_replace(
+                f"\n{Config.TEXTS['menu']['general_date_release']}",
+                date=datetime.fromtimestamp(
+                    int(Config.RELEASE_TIMESTAMP)
+                ).strftime("%d\\.%m %H:%M"),
+                date_closed=datetime.fromtimestamp(
+                    int(Config.RELEASE_ABOUT_TIMESTAMP)
+                ).strftime("%d\\.%m %H:%M")
+            )
+
         if user.preferences is not None:
             if user.user_for_gift_id is not None:
                 text += text_replace(
