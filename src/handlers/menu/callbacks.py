@@ -207,9 +207,20 @@ async def my_person_callback_handler(callback: CallbackQuery) -> None:
         if Config.ALL_QUESTIONS.get(element) is None:
             continue
 
+        prefer_element_text = ""
+        strings = prefers[element].split("\n")
+
+        for string in strings:
+            prefer_element_text += (
+                f">{md_replace_text(string)}"
+            )
+
+            if strings.index(string) < len(strings) - 1:
+                prefer_element_text += "\n"  
+
         text.append(
-            f"*{md_replace_text(Config.ALL_QUESTIONS[element]['name'])}*: "
-            f"`{md_replace_text(prefers[element])}`"
+            f"*{md_replace_text(Config.ALL_QUESTIONS[element]['name'])}*\n"
+            f"{prefer_element_text}"
         )
 
     await callback.message.edit_text(
