@@ -82,8 +82,8 @@ async def first_question_callback_handler(
 
 
 @router.callback_query(Questions.steps, F.data == "BACK")
-@Verification.check()
 @router.callback_query(F.data == "ENTER_DATA")
+@Verification.check()
 async def enter_data_callback_handler(
     callback: CallbackQuery,
     state: FSMContext
@@ -216,7 +216,7 @@ async def my_person_callback_handler(callback: CallbackQuery) -> None:
             )
 
             if strings.index(string) < len(strings) - 1:
-                prefer_element_text += "\n"  
+                prefer_element_text += "\n"
 
         text.append(
             f"*{md_replace_text(Config.ALL_QUESTIONS[element]['name'])}*\n"
@@ -267,6 +267,7 @@ async def gift_delivered_callback_handler(callback: CallbackQuery) -> None:
 
 
 @router.callback_query(F.data == "BACK")
+@router.callback_query(F.data == "MENU")
 @router.callback_query(AdminPanel.panel, F.data == "BACK")
 @Verification.check()
 async def back_callback_handler(
