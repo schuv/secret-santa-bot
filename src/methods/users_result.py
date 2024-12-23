@@ -53,8 +53,8 @@ async def create_santa_results(bot: Bot) -> None:
             reply_markup=create_markup(
                 [
                     create_button(
-                        Config.TEXTS["keyboard"]["person"],
-                        "MY_PERSON"
+                        Config.TEXTS["keyboard"]["to_menu"],
+                        "MENU"
                     )
                 ]
             )

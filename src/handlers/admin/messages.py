@@ -80,7 +80,7 @@ async def enter_code_message_handler(
 
     user_id = int(message.text) / (Config.SECRET_FACTOR + Config.SECRET_HASH)
 
-    if user_id % round(user_id) != 0:
+    if user_id < 1 or user_id % round(user_id) != 0:
         await message.answer(
             Config.TEXTS["errors"]["no_such_code"],
             reply_markup=create_markup(
@@ -125,8 +125,12 @@ async def enter_code_message_handler(
     await message.answer(
         text_replace(
             Config.TEXTS["admin"]["panel"]["code_received"],
-            receiver_id=user.user_for_gift_id
-        ),
+            receiver_id=user.user_for_gift_id,
+            ss_id=user.id
+        )
+    )
+    await message.answer(
+        Config.TEXTS["admin"]["panel"]["back_to_menu"],
         reply_markup=create_markup(
             [
                 create_button(

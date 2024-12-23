@@ -1,11 +1,11 @@
 import functools
 from aiogram import BaseMiddleware
 
+from database.methods import User
 from config import (
     Cache,
     Config
 )
-from database.methods import User
 
 
 class Verification(BaseMiddleware):
