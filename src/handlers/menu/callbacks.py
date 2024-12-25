@@ -268,6 +268,7 @@ async def gift_delivered_callback_handler(callback: CallbackQuery) -> None:
 
 @router.callback_query(F.data == "BACK")
 @router.callback_query(F.data == "MENU")
+@router.callback_query(F.data == "MENU_DO_NOT_EDIT")
 @router.callback_query(AdminPanel.panel, F.data == "BACK")
 @Verification.check()
 async def back_callback_handler(
@@ -280,6 +281,11 @@ async def back_callback_handler(
     :param callback: Telegram callback
     :param state: User's state
     """
+
+    if "DO_NOT_EDIT" in callback.data:
+        await callback.message.edit_reply_markup()
+        await messages.send_menu_message(callback.message)
+        return
 
     await state.clear()
     await messages.send_menu_message(callback.message, True)
