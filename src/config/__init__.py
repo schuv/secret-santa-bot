@@ -30,9 +30,10 @@ class Config:
     BOT_TOKEN: str = os.environ["BOT_TOKEN"]
     TEXTS: dict = json.load(open("config/texts.json", "r", encoding="UTF-8"))
 
-    RELEASE_TIMESTAMP: int = int(os.environ["RELEASE_TIMESTAMP"])
+    RELEASE_TIMESTAMP: int = int(os.environ["GIFT_RELEASE_TIMESTAMP"])
     RELEASE_ABOUT_TIMESTAMP: int = RELEASE_TIMESTAMP - 3600
     GIFT_BUY_UNTIL: int = int(os.environ["GIFT_BUY_UNTIL"])
+    GIFT_REMINDER_TIMESTAMP: int = int(os.environ["GIFT_REMINDER_TIMESTAMP"])
 
     SECRET_HASH: int = random.randint(1000, 100000)
     SECRET_FACTOR: int = random.randint(100, 900)

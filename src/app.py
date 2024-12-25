@@ -16,7 +16,10 @@ from aiogram import (
 
 from config import Config
 from database.methods import User
-from methods.users_result import create_santa_results
+from methods.crons import (
+    send_quick_reminder,
+    create_santa_results
+)
 from methods.messages import (
     text_replace,
     md_replace_text
@@ -93,6 +96,12 @@ async def startup_handler(bot: Bot) -> None:
         "date",
         args=(bot, ),
         run_date=datetime.fromtimestamp(Config.RELEASE_TIMESTAMP)
+    )
+    scheduler.add_job(
+        send_quick_reminder,
+        "date",
+        args=(bot, ),
+        run_date=datetime.fromtimestamp(Config.GIFT_REMINDER_TIMESTAMP)
     )
 
     logger.info("Bot started")
